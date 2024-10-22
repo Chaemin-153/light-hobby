@@ -14,8 +14,8 @@ export default {
         yellow: '#fed047',
       },
       screens: {
-        mob: '500px',
-        sm: { max: '768px' },
+        mob: { max: '500px' },
+        sm: { min: '500px', max: '768px' },
         md: { min: '769px', max: '1023px' },
         lg: { min: '1024px', max: '1200px' },
       },
