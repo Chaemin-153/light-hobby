@@ -1,10 +1,14 @@
+import { Link } from 'react-router-dom';
+
 const CardList = () => {
   return (
     <div className="flex flex-col gap-8 p-6 mb-8 w-[1200px] border-4 border-yellow rounded-xl">
       {/* CardList Header */}
       <div className="flex justify-between font-bold">
         <h2 className="text-2xl">그림</h2>
-        <div>전체보기</div>
+        <Link to={'/category/painting'}>
+          <div>전체보기</div>
+        </Link>
       </div>
       {/* CardList Content */}
       <div className="flex justify-center gap-8">

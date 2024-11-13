@@ -1,12 +1,11 @@
 import CardList from '../components/mainpage/CardList';
 
-const MainPage = () => {
+const PaintingPage = () => {
   return (
     <div className="flex flex-col items-center w-full p-12">
-      <CardList />
       <CardList />
     </div>
   );
 };
 
-export default MainPage;
+export default PaintingPage;
