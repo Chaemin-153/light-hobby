@@ -6,3 +6,8 @@
   box-sizing: border-box;
 }
 
+@layer utilities {
+  .btn-hover {
+    @apply hover:text-yellow hover:border-b-[4px] hover:border-yellow hover:cursor-pointer;
+  }
+}
