@@ -12,9 +12,7 @@ interface HobbyData {
   description: string;
 }
 
-const CardList = () => {
-  const location = useLocation();
-  const category = location.pathname.split('/').pop() || '';
+const CardList = ({ category }: { category: string }) => {
   const categoryName = translateCategory(category);
 
   const [hobbyDataList, setHobbyDataList] = useState<HobbyData[]>([]);
