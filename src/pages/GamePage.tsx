@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import CardList from '../components/mainpage/CardList';
+import PopularCardList from '../components/mainpage/PopularCardList';
 
 const GamePage = () => {
   const location = useLocation();
@@ -7,7 +7,7 @@ const GamePage = () => {
 
   return (
     <div className="flex flex-col items-center w-full p-12">
-      <CardList category={category} />
+      <PopularCardList category={category} />
     </div>
   );
 };
