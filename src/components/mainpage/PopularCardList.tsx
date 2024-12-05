@@ -51,7 +51,7 @@ const CardList = ({ category }: { category: string }) => {
     <div className="flex flex-col gap-8 p-6 mb-8 w-[1200px] border-4 border-yellow rounded-xl">
       {/* CardList Header */}
       <div className="flex justify-between font-bold">
-        <h2 className="text-2xl">{categoryName}</h2>
+        <h2 className="text-2xl">인기 {categoryName}</h2>
         <Link to={'/category/painting'}>
           <div>전체보기</div>
         </Link>
