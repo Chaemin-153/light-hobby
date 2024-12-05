@@ -3,6 +3,7 @@ import translateCategory from '../../utils/translateCategory';
 import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useEffect, useState } from 'react';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
 interface HobbyData {
   id: string;
@@ -10,12 +11,15 @@ interface HobbyData {
   views: number;
   likes: number;
   description: string;
+  imagePath: string;
+  imageUrl?: string;
 }
 
 const CardList = ({ category }: { category: string }) => {
-  const categoryName = translateCategory(category);
+  const categoryName = translateCategory(category); // Category를 한글로 변경
 
   const [hobbyDataList, setHobbyDataList] = useState<HobbyData[]>([]);
+  const storage = getStorage();
 
   const fetchHobbyData = async (category: string): Promise<void> => {
     try {
@@ -28,12 +32,18 @@ const CardList = ({ category }: { category: string }) => {
       const querySnapShot = await getDocs(hobbyQuery);
 
       const hobbyList: HobbyData[] = [];
-      querySnapShot.forEach((doc) => {
-        hobbyList.push({
+
+      for (const doc of querySnapShot.docs) {
+        const hobby = {
           id: doc.id,
           ...doc.data(),
-        } as HobbyData);
-      });
+        } as HobbyData;
+        if (hobby.imagePath) {
+          const imageRef = ref(storage, hobby.imagePath);
+          hobby.imageUrl = await getDownloadURL(imageRef);
+        }
+        hobbyList.push(hobby);
+      }
 
       setHobbyDataList(hobbyList);
     } catch (error) {
@@ -57,11 +67,19 @@ const CardList = ({ category }: { category: string }) => {
         </Link>
       </div>
       {/* CardList Content */}
-      <div className="flex justify-center gap-8">
+      <div className="grid grid-cols-4 gap-8">
         {/* Card Content */}
         {hobbyDataList.map((hobby) => (
           <div key={hobby.id} className="w-64">
-            <div className="bg-yellow w-64 h-64 rounded-xl" />
+            {hobby.imageUrl ? (
+              <img
+                src={hobby.imageUrl}
+                alt={hobby.title}
+                className="w-64 h-64 rounded-xl"
+              />
+            ) : (
+              <div className="bg-yellow w-64 h-64 rounded-xl" />
+            )}
             <div className="flex flex-col p-4 gap-2">
               <div className="flex font-bold text-lg">{hobby.title}</div>
               <div className="flex text-left">{hobby.description}</div>
