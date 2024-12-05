@@ -1,6 +1,6 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import translateCategory from '../../utils/translateCategory';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useEffect, useState } from 'react';
 
@@ -20,7 +20,12 @@ const CardList = ({ category }: { category: string }) => {
   const fetchHobbyData = async (category: string): Promise<void> => {
     try {
       const hobbyCollection = collection(db, category);
-      const querySnapShot = await getDocs(hobbyCollection);
+      const hobbyQuery = query(
+        hobbyCollection,
+        orderBy('likes', 'desc'),
+        limit(4)
+      );
+      const querySnapShot = await getDocs(hobbyQuery);
 
       const hobbyList: HobbyData[] = [];
       querySnapShot.forEach((doc) => {
