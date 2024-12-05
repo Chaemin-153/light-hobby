@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import PopularCardList from '../components/mainpage/PopularCardList';
+import CategoryCardList from '../components/category/CategoryCardList';
 
 const MusicPage = () => {
   const location = useLocation();
@@ -7,7 +7,7 @@ const MusicPage = () => {
 
   return (
     <div className="flex flex-col items-center w-full p-12">
-      <PopularCardList category={category} />
+      <CategoryCardList category={category} />
     </div>
   );
 };
