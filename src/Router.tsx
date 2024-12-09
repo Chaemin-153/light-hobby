@@ -9,17 +9,20 @@ import ExercisePage from './pages/ExercisePage';
 import CookingPage from './pages/CookingPage';
 import GamePage from './pages/GamePage';
 import MoviePage from './pages/MoviePage';
+import AuthLayout from './components/common/AuthLayout';
 
 const AppRouter = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Layout />}>
-        {/* 메인 페이지 */}
-        <Route index element={<MainPage />} />
+      <Route path="/" element={<AuthLayout />}>
         {/* 로그인 페이지 */}
         <Route path="login" element={<LoginPage />} />
         {/* 회원가입 페이지 */}
         <Route path="signup" element={<SignupPage />} />
+      </Route>
+      <Route path="/" element={<Layout />}>
+        {/* 메인 페이지 */}
+        <Route index element={<MainPage />} />
         {/* 마이페이지 추가 예정 */}
         {/* 카테고리 */}
         <Route path="category">
