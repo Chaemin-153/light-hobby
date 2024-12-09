@@ -12,6 +12,7 @@ export default {
         white: '#FFFFFF',
         black: '#171717',
         yellow: '#fed047',
+        yellowHover: '#fac037',
       },
       screens: {
         mob: { max: '500px' },
