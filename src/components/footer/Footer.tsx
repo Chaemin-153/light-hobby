@@ -2,7 +2,7 @@ import { FaInstagram, FaFacebook, FaXTwitter } from 'react-icons/fa6';
 
 const Footer = () => {
   return (
-    <footer className="flex flex-col gap-4 bg-yellow p-6">
+    <footer className="flex flex-col gap-4 bg-yellow p-6 fixed bottom-0 left-0 w-full">
       <div className="flex justify-center gap-8">
         <a href="https://instagram.com">
           <FaInstagram size={40} />
