@@ -7,10 +7,16 @@ interface SignUpFormValues {
 }
 
 const SignUpForm = () => {
-  const { register, handleSubmit, watch } = useForm<SignUpFormValues>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { isSubmitting, errors },
+  } = useForm<SignUpFormValues>();
 
   const onSubmit: SubmitHandler<SignUpFormValues> = (data) => {
     console.log('회원가입 성공!', data);
+    alert('회원가입 성공!');
   };
 
   // 비밀번호 확인 값 체크를 위한 watch
@@ -22,7 +28,7 @@ const SignUpForm = () => {
       className="flex flex-col gap-6 w-96 h-full mx-auto"
     >
       {/* Email Input */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 text-left">
         <label htmlFor="email" className="block text-left">
           이메일
         </label>
@@ -31,16 +37,19 @@ const SignUpForm = () => {
             required: '이메일을 입력해주세요.',
             pattern: {
               value: /^\S+@\S+\.\S+$/,
-              message: '유효한 이메일 주소를 입력해주세요.',
+              message: '이메일 형식에 맞지 않습니다.',
             },
           })}
           type="email"
           id="email"
           className="w-full px-3 py-2 border rounded focus:border-yellow focus:outline-none"
         />
+        {errors.email && (
+          <small className="text-red-500">{errors.email.message}</small>
+        )}
       </div>
       {/* Password Input */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 text-left">
         <label htmlFor="password" className="block text-left">
           비밀번호
         </label>
@@ -56,6 +65,9 @@ const SignUpForm = () => {
           id="password"
           className="w-full px-3 py-2 border rounded focus:border-yellow focus:outline-none"
         />
+        {errors.password && (
+          <small className="text-red-500">{errors.password.message}</small>
+        )}
       </div>
       {/* Confirm Password Input */}
       <div className="flex flex-col gap-2">
@@ -77,6 +89,7 @@ const SignUpForm = () => {
       <button
         type="submit"
         className="w-full bg-yellow text-white py-2 rounded focus:border-yellow focus:outline-none hover:bg-yellowHover"
+        disabled={isSubmitting}
       >
         회원가입
       </button>
