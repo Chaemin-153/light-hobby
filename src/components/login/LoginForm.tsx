@@ -1,5 +1,7 @@
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useForm, SubmitHandler } from 'react-hook-form';
-// import { auth } from '../../firebase';
+import { auth } from '../../firebase';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormValues {
   email: string;
@@ -7,16 +9,20 @@ interface LoginFormValues {
 }
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
   } = useForm<LoginFormValues>();
 
-  const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
+  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
+    const { email, password } = data;
     try {
+      await signInWithEmailAndPassword(auth, email, password);
       console.log('로그인 성공!', data);
       alert('로그인 성공!');
+      navigate('/');
     } catch (error) {
       console.log('로그인 실패', error);
       alert('로그인 실패');
