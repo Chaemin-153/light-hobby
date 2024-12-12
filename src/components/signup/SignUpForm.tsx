@@ -1,4 +1,6 @@
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { auth } from '../../firebase';
 
 interface SignUpFormValues {
   email: string;
@@ -14,9 +16,17 @@ const SignUpForm = () => {
     formState: { isSubmitting, errors },
   } = useForm<SignUpFormValues>();
 
-  const onSubmit: SubmitHandler<SignUpFormValues> = (data) => {
-    console.log('회원가입 성공!', data);
-    alert('회원가입 성공!');
+  const onSubmit: SubmitHandler<SignUpFormValues> = async (data) => {
+    const { email, password } = data;
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      console.log('회원가입 성공!', data);
+      alert('회원가입 성공!');
+    } catch (error) {
+      console.log('회원가입 실패', error);
+      alert('회원가입 실패');
+    }
   };
 
   // 비밀번호 확인 값 체크를 위한 watch
