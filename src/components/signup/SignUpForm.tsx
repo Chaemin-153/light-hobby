@@ -1,12 +1,7 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { auth } from '../../firebase';
-
-interface SignUpFormValues {
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+import { SignUpFormValues } from '../../types';
 
 const SignUpForm = () => {
   const {

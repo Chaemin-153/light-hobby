@@ -5,16 +5,7 @@ import { db } from '../../firebase';
 import { useEffect, useState } from 'react';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import HobbyCard from '../common/HobbyCard';
-
-interface HobbyData {
-  id: string;
-  title: string;
-  views: number;
-  likes: number;
-  description: string;
-  imagePath: string;
-  imageUrl?: string;
-}
+import { HobbyData } from '../../types';
 
 const CardList = ({ category }: { category: string }) => {
   const categoryName = translateCategory(category); // Category를 한글로 변경

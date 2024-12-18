@@ -7,11 +7,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
-
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
+import { LoginFormValues } from '../../types';
 
 const LoginForm = () => {
   const navigate = useNavigate();

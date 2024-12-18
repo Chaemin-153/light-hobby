@@ -1,12 +1,4 @@
-interface HobbyData {
-  id: string;
-  title: string;
-  views: number;
-  likes: number;
-  description: string;
-  imagePath: string;
-  imageUrl?: string;
-}
+import { HobbyData } from '../../types';
 
 interface HobbyDataProps {
   hobby: HobbyData;
