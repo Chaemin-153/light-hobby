@@ -3,6 +3,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useEffect, useState } from 'react';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+import HobbyCard from '../common/HobbyCard';
 
 interface HobbyData {
   id: string;
@@ -61,25 +62,7 @@ const CategoryCardList = ({ category }: { category: string }) => {
       <div className="grid grid-cols-4 gap-8">
         {/* Card Content */}
         {hobbyDataList.map((hobby) => (
-          <div key={hobby.id} className="w-64">
-            {hobby.imageUrl ? (
-              <img
-                src={hobby.imageUrl}
-                alt={hobby.title}
-                className="w-64 h-64 rounded-xl"
-              />
-            ) : (
-              <div className="bg-yellow w-64 h-64 rounded-xl" />
-            )}
-            <div className="flex flex-col p-4 gap-2">
-              <div className="flex font-bold text-lg">{hobby.title}</div>
-              <div className="flex text-left">{hobby.description}</div>
-              <div className="flex gap-4">
-                <div>좋아요 {hobby.likes}</div>
-                <div>조회수 {hobby.views}</div>
-              </div>
-            </div>
-          </div>
+          <HobbyCard hobby={hobby} />
         ))}
       </div>
     </div>
