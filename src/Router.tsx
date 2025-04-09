@@ -10,6 +10,7 @@ import CookingPage from './pages/CookingPage';
 import GamePage from './pages/GamePage';
 import MoviePage from './pages/MoviePage';
 import AuthLayout from './components/common/AuthLayout';
+import HobbyDetailPage from './pages/HobbyDetailPage';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -23,22 +24,21 @@ const AppRouter = () => (
       <Route path="/" element={<Layout />}>
         {/* 메인 페이지 */}
         <Route index element={<MainPage />} />
+        {/* 그림 카테고리 */}
+        <Route path="painting" element={<PaintingPage />} />
+        {/* 음악 카테고리 */}
+        <Route path="music" element={<MusicPage />} />
+        {/* 운동 카테고리 */}
+        <Route path="exercise" element={<ExercisePage />} />
+        {/* 요리 카테고리 */}
+        <Route path="cooking" element={<CookingPage />} />
+        {/* 게임 카테고리 */}
+        <Route path="game" element={<GamePage />} />
+        {/* 영화 카테고리 */}
+        <Route path="movie" element={<MoviePage />} />
+        {/* 취미 상세페이지 */}
+        <Route path=":category/:id" element={<HobbyDetailPage />} />
         {/* 마이페이지 추가 예정 */}
-        {/* 카테고리 */}
-        <Route path="category">
-          {/* 그림 카테고리 */}
-          <Route path="painting" element={<PaintingPage />} />
-          {/* 음악 카테고리 */}
-          <Route path="music" element={<MusicPage />} />
-          {/* 운동 카테고리 */}
-          <Route path="exercise" element={<ExercisePage />} />
-          {/* 요리 카테고리 */}
-          <Route path="cooking" element={<CookingPage />} />
-          {/* 게임 카테고리 */}
-          <Route path="game" element={<GamePage />} />
-          {/* 영화 카테고리 */}
-          <Route path="movie" element={<MoviePage />} />
-        </Route>
       </Route>
     </Routes>
   </BrowserRouter>
