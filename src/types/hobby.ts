@@ -5,5 +5,7 @@ export interface HobbyData {
   likes: number;
   description: string;
   imagePath: string;
+  category: string;
+  createAt: Date;
   imageUrl?: string;
 }
