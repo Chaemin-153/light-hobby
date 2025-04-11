@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export interface HobbyData {
   id: string;
   title: string;
@@ -6,6 +8,6 @@ export interface HobbyData {
   description: string;
   imagePath: string;
   category: string;
-  createAt: Date;
+  createdAt: Timestamp;
   imageUrl?: string;
 }
