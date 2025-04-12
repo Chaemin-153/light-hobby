@@ -19,9 +19,9 @@ export default {
         sm: { min: '500px', max: '768px' },
         md: { min: '769px', max: '1023px' },
         lg: { min: '1024px', max: '1200px' },
+        xl: { min: '1248px' },
       },
     },
   },
   plugins: [],
 };
-
