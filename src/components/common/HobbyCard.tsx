@@ -22,9 +22,9 @@ const HobbyCard = ({ hobby }: HobbyDataProps) => {
           <div className="bg-yellow w-full h-64 rounded-xl" />
         )}
       </Link>
-      <div className="flex flex-col p-4 gap-2">
-        <div className="flex font-bold text-lg">{title}</div>
-        <div className="flex text-left mob:hidden">{description}</div>
+      <div className="flex flex-col p-2 gap-2">
+        <p className="text-left font-bold text-lg truncate">{title}</p>
+        <p className="text-left mob:hidden line-clamp-3">{description}</p>
         <div className="flex sm:flex-col sm:items-start sm:gap-0 gap-4">
           <div>좋아요 {likes}</div>
           <div>조회수 {views}</div>

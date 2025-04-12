@@ -44,15 +44,18 @@ const HobbyDetailPage = () => {
         <>
           <div className="flex pb-2 gap-1 font-bold text-gray-600">
             <Link to={'/'}>
-              <p className="">home</p>
+              <p>home</p>
             </Link>
-            <p className="">&gt;</p>
+            <p>&gt;</p>
             <Link to={`/${category}`}>
-              <p className="">{category}</p>
+              <p>{category}</p>
             </Link>
-            <p className="">&gt;</p>
-            <Link to={`/${category}/music${hobby.id}`}>
-              <p className="">{hobby.title}</p>
+            <p>&gt;</p>
+            <Link
+              to={`/${category}/music${hobby.id}`}
+              className="overflow-hidden"
+            >
+              <p className="truncate">{hobby.title}</p>
             </Link>
           </div>
           <div className="flex justify-around w-full">
@@ -65,8 +68,10 @@ const HobbyDetailPage = () => {
             ) : (
               <div className="bg-yellow w-64 h-64 rounded-xl" />
             )}
-            <div className="flex flex-col items-start w-1/2 gap-2 pl-8">
-              <h2 className="text-2xl font-bold">{hobby.title}</h2>
+            <div className="flex flex-col items-start w-1/2 gap-2 pl-8 text-left">
+              <h2 className="text-2xl font-bold line-clamp-3 sm:line-clamp-2 mob:line-clamp-2">
+                {hobby.title}
+              </h2>
               <p>{hobby.description}</p>
               <p>{hobby.createdAt.toDate().toLocaleString()}</p>
               <div className="flex gap-4 text-xs font-bold text-gray-400">
