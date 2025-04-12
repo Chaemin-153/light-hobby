@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { HobbyData } from '../types';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -42,7 +42,19 @@ const HobbyDetailPage = () => {
     <div className="w-full p-8">
       {hobby ? (
         <>
-          <p className="flex pb-2">카테고리 &gt; music</p>
+          <div className="flex pb-2 gap-1 font-bold text-gray-600">
+            <Link to={'/'}>
+              <p className="">home</p>
+            </Link>
+            <p className="">&gt;</p>
+            <Link to={`/${category}`}>
+              <p className="">{category}</p>
+            </Link>
+            <p className="">&gt;</p>
+            <Link to={`/${category}/music${hobby.id}`}>
+              <p className="">{hobby.title}</p>
+            </Link>
+          </div>
           <div className="flex justify-around w-full">
             {hobby.imageUrl ? (
               <img
