@@ -47,10 +47,12 @@ const CategoryCardList = ({ category }: { category: string }) => {
     <div className="flex flex-col gap-8 p-6 mb-8 w-full xl:w-pc border-4 border-yellow rounded-xl">
       {/* CardList Header */}
       <div className="flex justify-between font-bold">
-        <h2 className="text-2xl">{categoryName}</h2>
+        <h2 className="text-2xl md:text-xl sm:text-xl mob:text-lg">
+          {categoryName}
+        </h2>
       </div>
       {/* CardList Content */}
-      <div className="grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2 mob:grid-cols-2 gap-4">
+      <div className="grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2 mob:grid-cols-1 gap-4">
         {/* Card Content */}
         {hobbyDataList.map((hobby) => (
           <HobbyCard hobby={hobby} key={hobby.id} />

@@ -50,16 +50,18 @@ const CardList = ({ category }: { category: string }) => {
   }, [category]);
 
   return (
-    <div className="flex flex-col gap-8 p-6 mb-8 w-[1200px] border-4 border-yellow rounded-xl">
+    <div className="flex flex-col gap-8 p-6 mb-8 w-full xl:w-pc border-4 border-yellow rounded-xl">
       {/* CardList Header */}
       <div className="flex justify-between font-bold">
-        <h2 className="text-2xl">인기 {categoryName}</h2>
+        <h2 className="text-2xl md:text-xl sm:text-xl mob:text-lg">
+          인기 {categoryName}
+        </h2>
         <Link to={`/category/${category}`}>
-          <div>전체보기</div>
+          <div className="md:text-sm sm:text-sm mob:text-xs">전체보기</div>
         </Link>
       </div>
       {/* CardList Content */}
-      <div className="grid grid-cols-4 gap-8">
+      <div className="grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2 mob:grid-cols-1 gap-8">
         {/* Card Content */}
         {hobbyDataList.map((hobby) => (
           <HobbyCard hobby={hobby} />
