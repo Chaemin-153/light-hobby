@@ -11,3 +11,10 @@ export interface HobbyData {
   createdAt: Timestamp;
   imageUrl?: string;
 }
+
+export interface HobbyPostFormValues {
+  title: string;
+  description: string;
+  category: string;
+  image: FileList;
+}

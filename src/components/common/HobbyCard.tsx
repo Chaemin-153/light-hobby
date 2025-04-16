@@ -7,7 +7,7 @@ interface HobbyDataProps {
 
 const HobbyCard = ({ hobby }: HobbyDataProps) => {
   const { id, title, views, likes, description, imageUrl } = hobby;
-  const hobbyLink = `/${hobby.category}/${hobby.category + hobby.id}`;
+  const hobbyLink = `/${hobby.category}/${hobby.id}`;
 
   return (
     <div key={id} className="aspect-square w-full">

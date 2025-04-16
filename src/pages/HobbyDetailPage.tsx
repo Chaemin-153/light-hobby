@@ -51,10 +51,7 @@ const HobbyDetailPage = () => {
               <p>{category}</p>
             </Link>
             <p>&gt;</p>
-            <Link
-              to={`/${category}/music${hobby.id}`}
-              className="overflow-hidden"
-            >
+            <Link to={`/${category}/${hobby.id}`} className="overflow-hidden">
               <p className="truncate">{hobby.title}</p>
             </Link>
           </div>

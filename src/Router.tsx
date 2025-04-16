@@ -11,6 +11,7 @@ import GamePage from './pages/GamePage';
 import MoviePage from './pages/MoviePage';
 import AuthLayout from './components/common/AuthLayout';
 import HobbyDetailPage from './pages/HobbyDetailPage';
+import HobbyPostPage from './pages/HobbyPostPage';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -38,6 +39,8 @@ const AppRouter = () => (
         <Route path="movie" element={<MoviePage />} />
         {/* 취미 상세페이지 */}
         <Route path=":category/:id" element={<HobbyDetailPage />} />
+        {/* 게시물 작성 페이지 */}
+        <Route path="post/upload" element={<HobbyPostPage />} />
         {/* 마이페이지 추가 예정 */}
       </Route>
     </Routes>
