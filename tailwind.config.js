@@ -15,6 +15,10 @@ export default {
         black: '#171717',
         yellow: '#fed047',
         yellowHover: '#fac037',
+        red: '#e63946',
+        redHover: '#d62839',
+        purple: '#3f51b5',
+        purpleHover: '#303f9f',
       },
       screens: {
         mob: { max: '500px' },

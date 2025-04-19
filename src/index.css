@@ -7,7 +7,13 @@
 }
 
 @layer utilities {
-  .btn-hover {
+  .btn-hover-yellow {
     @apply hover:text-yellow hover:border-b-[4px] hover:border-yellow hover:cursor-pointer;
+  }
+  .btn-hover-red {
+    @apply hover:bg-redHover hover:cursor-pointer;
+  }
+  .btn-hover-purple {
+    @apply hover:bg-purpleHover hover:cursor-pointer;
   }
 }

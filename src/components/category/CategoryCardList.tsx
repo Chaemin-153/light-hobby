@@ -52,7 +52,7 @@ const CategoryCardList = ({ category }: { category: string }) => {
           {categoryName}
         </h2>
         <Link to={'/post/upload'}>
-          <h2 className="btn-hover text-xl md:text-base sm:text-base mob:text-base">
+          <h2 className="btn-hover-yellow text-xl md:text-base sm:text-base mob:text-base">
             글 작성
           </h2>
         </Link>

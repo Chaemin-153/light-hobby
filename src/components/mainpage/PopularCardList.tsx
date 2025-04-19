@@ -57,7 +57,7 @@ const CardList = ({ category }: { category: string }) => {
           인기 {categoryName}
         </h2>
         <Link to={`/${category}`}>
-          <div className="btn-hover md:text-sm sm:text-sm mob:text-xs">
+          <div className="btn-hover-yellow md:text-sm sm:text-sm mob:text-xs">
             전체보기
           </div>
         </Link>
