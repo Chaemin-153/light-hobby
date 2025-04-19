@@ -56,15 +56,11 @@ const HobbyDetailPage = () => {
             </Link>
           </div>
           <div className="flex justify-around w-full">
-            {hobby.imageUrl ? (
-              <img
-                src={hobby.imageUrl}
-                alt={hobby.title}
-                className="w-1/2 rounded-xl"
-              />
-            ) : (
-              <div className="bg-yellow w-64 h-64 rounded-xl" />
-            )}
+            <img
+              src={hobby.imageUrl}
+              alt={hobby.title}
+              className="w-1/2 rounded-xl"
+            />
             <div className="flex flex-col items-start w-1/2 gap-2 pl-8 text-left">
               <h2 className="text-2xl font-bold line-clamp-3 sm:line-clamp-2 mob:line-clamp-2">
                 {hobby.title}
@@ -74,6 +70,16 @@ const HobbyDetailPage = () => {
               <div className="flex gap-4 text-xs font-bold text-gray-400">
                 <p>likes{hobby.likes}</p>
                 <p>views{hobby.views}</p>
+              </div>
+
+              {/* 좋아요, 저장 Button */}
+              <div className="flex sm:flex-col mob:flex-col gap-4 w-full mt-auto text-2xl sm:text-xl mob:text-xl font-semibold">
+                <div className="w-1/2 sm:w-full mob:w-full text-center bg-red btn-hover-red rounded-xl p-4 text-white">
+                  좋아요
+                </div>
+                <div className="w-1/2 sm:w-full mob:w-full text-center bg-purple btn-hover-purple rounded-xl p-4 text-white">
+                  저장
+                </div>
               </div>
             </div>
           </div>
