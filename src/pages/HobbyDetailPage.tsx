@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { HobbyData } from '../types';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+import { getAuth } from 'firebase/auth';
 
 const HobbyDetailPage = () => {
   const { category, id } = useParams();
@@ -32,6 +33,46 @@ const HobbyDetailPage = () => {
     } catch (error) {
       console.error('데이터 가져오기 오류:', error);
     }
+  };
+
+  const handleLike = async (hobby: HobbyData): Promise<void> => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!category || !id) return;
+
+    if (!user) {
+      alert('로그인이 필요합니다');
+      return;
+    }
+
+    const interactionId = `${user.uid}_${hobby.category}${hobby.id}`;
+    const interactionRef = doc(db, 'userInteractions', interactionId);
+    const interactionSnap = await getDoc(interactionRef);
+
+    if (interactionSnap.exists() && interactionSnap.data().liked) {
+      alert('이미 좋아요를 눌렀습니다!');
+      return;
+    }
+
+    await updateDoc(doc(db, 'hobbies', category, 'items', hobby.id), {
+      likes: increment(1),
+    });
+
+    setHobby((prev) => (prev ? { ...prev, likes: prev.likes + 1 } : prev));
+
+    if (interactionSnap.exists()) {
+      await updateDoc(interactionRef, { liked: true });
+    } else {
+      await setDoc(interactionRef, {
+        userId: user.uid,
+        hobbyId: hobby.id,
+        liked: true,
+        saved: false,
+        createdAt: new Date(),
+      });
+    }
+
+    alert('좋아요 완료!');
   };
 
   useEffect(() => {
@@ -67,18 +108,20 @@ const HobbyDetailPage = () => {
               </h2>
               <p>{hobby.description}</p>
               <p>{hobby.createdAt.toDate().toLocaleString()}</p>
-              <div className="flex gap-4 text-xs font-bold text-gray-400">
-                <p>likes{hobby.likes}</p>
-                <p>views{hobby.views}</p>
+              <div className="text-sm font-bold text-gray-400">
+                <p>Views {hobby.views}</p>
               </div>
 
               {/* 좋아요, 저장 Button */}
               <div className="flex sm:flex-col mob:flex-col gap-4 w-full mt-auto text-2xl sm:text-xl mob:text-xl font-semibold">
-                <div className="w-1/2 sm:w-full mob:w-full text-center bg-red btn-hover-red rounded-xl p-4 text-white">
-                  좋아요
-                </div>
+                <button
+                  className="w-1/2 sm:w-full mob:w-full text-center bg-red btn-hover-red rounded-xl p-4 text-white"
+                  onClick={() => handleLike(hobby)}
+                >
+                  좋아요 {hobby.likes}
+                </button>
                 <div className="w-1/2 sm:w-full mob:w-full text-center bg-purple btn-hover-purple rounded-xl p-4 text-white">
-                  저장
+                  저장 {hobby.saves}
                 </div>
               </div>
             </div>
