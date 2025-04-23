@@ -15,7 +15,7 @@ const CardList = ({ category }: { category: string }) => {
 
   const fetchHobbyData = async (category: string): Promise<void> => {
     try {
-      const hobbyCollection = collection(db, category);
+      const hobbyCollection = collection(db, 'hobbies', category, 'items');
       const hobbyQuery = query(
         hobbyCollection,
         orderBy('likes', 'desc'),

@@ -14,7 +14,7 @@ const HobbyDetailPage = () => {
     if (!category || !id) return;
 
     try {
-      const docRef = doc(db, category, id);
+      const docRef = doc(db, 'hobbies', category, 'items', id);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {

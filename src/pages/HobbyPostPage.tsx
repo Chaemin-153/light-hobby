@@ -25,12 +25,19 @@ const HobbyPostPage = () => {
     try {
       const file = image[0];
       const storage = getStorage();
-      const storagePath = `${category}/${category}_${Date.now()}_${file.name}`;
+      const storagePath = `hobbyImages/${category}/${category}_${Date.now()}_${
+        file.name
+      }`;
       const imageRef = ref(storage, storagePath);
 
       await uploadBytes(imageRef, file);
 
-      const categoryCollectionRef = collection(db, category);
+      const categoryCollectionRef = collection(
+        db,
+        'hobbies',
+        category,
+        'items'
+      );
       const snapShot = await getDocs(categoryCollectionRef);
       const docCount = snapShot.size;
       const newId = `${docCount + 1}`;
@@ -44,9 +51,10 @@ const HobbyPostPage = () => {
         createdAt: Timestamp.now(),
         likes: 0,
         views: 0,
+        saves: 0,
       };
 
-      await setDoc(doc(db, category, newId), newDoc);
+      await setDoc(doc(db, 'hobbies', category, 'items', newId), newDoc);
 
       console.log('업로드 성공!', data);
       alert('업로드 성공!');
