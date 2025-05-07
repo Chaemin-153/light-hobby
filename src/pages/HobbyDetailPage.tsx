@@ -93,8 +93,22 @@ const HobbyDetailPage = () => {
     );
   };
 
+  const updateViewCount = async (category: string, hobbyId: string) => {
+    const hobbyRef = doc(db, 'hobbies', category, 'items', hobbyId);
+    await updateDoc(hobbyRef, {
+      views: increment(1),
+    });
+  };
+
   useEffect(() => {
-    fetchHobbydata();
+    if (!category || !id) return;
+
+    const run = async () => {
+      await updateViewCount(category, id);
+      await fetchHobbydata();
+    };
+
+    run();
   }, [category, id]);
 
   return (
