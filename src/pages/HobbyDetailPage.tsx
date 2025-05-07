@@ -49,11 +49,17 @@ const HobbyDetailPage = () => {
     const interactionRef = doc(db, 'userInteractions', interactionId);
     const interactionSnap = await getDoc(interactionRef);
 
+    // 좋아요 Remove
     if (interactionSnap.exists() && interactionSnap.data().liked) {
-      alert('이미 좋아요를 눌렀습니다!');
+      setHobby((prev) => (prev ? { ...prev, likes: prev.likes - 1 } : prev));
+      await updateDoc(interactionRef, { liked: false, createdAt: new Date() });
+      await updateDoc(doc(db, 'hobbies', category, 'items', hobby.id), {
+        likes: increment(-1),
+      });
       return;
     }
 
+    // 좋아요 Add
     await updateDoc(doc(db, 'hobbies', category, 'items', hobby.id), {
       likes: increment(1),
     });
@@ -71,8 +77,6 @@ const HobbyDetailPage = () => {
         createdAt: new Date(),
       });
     }
-
-    alert('좋아요 완료!');
   };
 
   const handleSave = async (hobby: HobbyData): Promise<void> => {
@@ -89,11 +93,17 @@ const HobbyDetailPage = () => {
     const interactionRef = doc(db, 'userInteractions', interactionId);
     const interactionSnap = await getDoc(interactionRef);
 
+    // 저장 Remove
     if (interactionSnap.exists() && interactionSnap.data().saved) {
-      alert('이미 저장을 눌렀습니다!');
+      setHobby((prev) => (prev ? { ...prev, saves: prev.saves - 1 } : prev));
+      await updateDoc(interactionRef, { saved: false, createdAt: new Date() });
+      await updateDoc(doc(db, 'hobbies', category, 'items', hobby.id), {
+        saves: increment(-1),
+      });
       return;
     }
 
+    // 저장 Add
     await updateDoc(doc(db, 'hobbies', category, 'items', hobby.id), {
       saves: increment(1),
     });
@@ -111,8 +121,6 @@ const HobbyDetailPage = () => {
         createdAt: new Date(),
       });
     }
-
-    alert('저장 완료!');
   };
 
   useEffect(() => {
