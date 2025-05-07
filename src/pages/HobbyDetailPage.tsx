@@ -61,11 +61,11 @@ const HobbyDetailPage = () => {
     setHobby((prev) => (prev ? { ...prev, likes: prev.likes + 1 } : prev));
 
     if (interactionSnap.exists()) {
-      await updateDoc(interactionRef, { liked: true });
+      await updateDoc(interactionRef, { liked: true, createdAt: new Date() });
     } else {
       await setDoc(interactionRef, {
         userId: user.uid,
-        hobbyId: hobby.id,
+        hobbyId: hobby.category + hobby.id,
         liked: true,
         saved: false,
         createdAt: new Date(),
@@ -73,6 +73,46 @@ const HobbyDetailPage = () => {
     }
 
     alert('좋아요 완료!');
+  };
+
+  const handleSave = async (hobby: HobbyData): Promise<void> => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!category || !id) return;
+
+    if (!user) {
+      alert('로그인이 필요합니다');
+      return;
+    }
+
+    const interactionId = `${user.uid}_${hobby.category}${hobby.id}`;
+    const interactionRef = doc(db, 'userInteractions', interactionId);
+    const interactionSnap = await getDoc(interactionRef);
+
+    if (interactionSnap.exists() && interactionSnap.data().saved) {
+      alert('이미 저장을 눌렀습니다!');
+      return;
+    }
+
+    await updateDoc(doc(db, 'hobbies', category, 'items', hobby.id), {
+      saves: increment(1),
+    });
+
+    setHobby((prev) => (prev ? { ...prev, saves: prev.saves + 1 } : prev));
+
+    if (interactionSnap.exists()) {
+      await updateDoc(interactionRef, { saved: true, createdAt: new Date() });
+    } else {
+      await setDoc(interactionRef, {
+        userId: user.uid,
+        hobbyId: hobby.category + hobby.id,
+        liked: false,
+        saved: true,
+        createdAt: new Date(),
+      });
+    }
+
+    alert('저장 완료!');
   };
 
   useEffect(() => {
@@ -120,7 +160,10 @@ const HobbyDetailPage = () => {
                 >
                   좋아요 {hobby.likes}
                 </button>
-                <div className="w-1/2 sm:w-full mob:w-full text-center bg-purple btn-hover-purple rounded-xl p-4 text-white">
+                <div
+                  className="w-1/2 sm:w-full mob:w-full text-center bg-purple btn-hover-purple rounded-xl p-4 text-white"
+                  onClick={() => handleSave(hobby)}
+                >
                   저장 {hobby.saves}
                 </div>
               </div>
