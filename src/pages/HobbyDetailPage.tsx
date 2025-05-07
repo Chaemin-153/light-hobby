@@ -35,92 +35,62 @@ const HobbyDetailPage = () => {
     }
   };
 
-  const handleLike = async (hobby: HobbyData): Promise<void> => {
+  const handleButtonInteraction = async (
+    hobby: HobbyData,
+    type: 'like' | 'save'
+  ): Promise<void> => {
     const auth = getAuth();
     const user = auth.currentUser;
-    if (!category || !id) return;
-
-    if (!user) {
+    if (!category || !id || !user) {
       alert('로그인이 필요합니다');
       return;
     }
 
     const interactionId = `${user.uid}_${hobby.category}${hobby.id}`;
     const interactionRef = doc(db, 'userInteractions', interactionId);
+    const hobbyRef = doc(db, 'hobbies', category, 'items', hobby.id);
     const interactionSnap = await getDoc(interactionRef);
 
-    // 좋아요 Remove
-    if (interactionSnap.exists() && interactionSnap.data().liked) {
-      setHobby((prev) => (prev ? { ...prev, likes: prev.likes - 1 } : prev));
-      await updateDoc(interactionRef, { liked: false, createdAt: new Date() });
-      await updateDoc(doc(db, 'hobbies', category, 'items', hobby.id), {
-        likes: increment(-1),
-      });
-      return;
-    }
+    const isLike = type === 'like';
+    const counterField = isLike ? 'likes' : 'saves';
+    const flagField = isLike ? 'liked' : 'saved';
 
-    // 좋아요 Add
-    await updateDoc(doc(db, 'hobbies', category, 'items', hobby.id), {
-      likes: increment(1),
-    });
-
-    setHobby((prev) => (prev ? { ...prev, likes: prev.likes + 1 } : prev));
+    let isAlready = false;
 
     if (interactionSnap.exists()) {
-      await updateDoc(interactionRef, { liked: true, createdAt: new Date() });
+      isAlready = interactionSnap.data()?.[flagField] === true;
+    }
+
+    // (Firebase) Hobby 문서: 업데이트
+    await updateDoc(hobbyRef, {
+      [counterField]: increment(isAlready ? -1 : 1),
+    });
+
+    // (Firebase) Interaction 문서: 생성 or 업데이트
+    if (interactionSnap.exists()) {
+      await updateDoc(interactionRef, {
+        [flagField]: !isAlready,
+        createdAt: new Date(),
+      });
     } else {
       await setDoc(interactionRef, {
         userId: user.uid,
         hobbyId: hobby.category + hobby.id,
-        liked: true,
-        saved: false,
+        liked: isLike ? true : false,
+        saved: isLike ? false : true,
         createdAt: new Date(),
       });
     }
-  };
 
-  const handleSave = async (hobby: HobbyData): Promise<void> => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    if (!category || !id) return;
-
-    if (!user) {
-      alert('로그인이 필요합니다');
-      return;
-    }
-
-    const interactionId = `${user.uid}_${hobby.category}${hobby.id}`;
-    const interactionRef = doc(db, 'userInteractions', interactionId);
-    const interactionSnap = await getDoc(interactionRef);
-
-    // 저장 Remove
-    if (interactionSnap.exists() && interactionSnap.data().saved) {
-      setHobby((prev) => (prev ? { ...prev, saves: prev.saves - 1 } : prev));
-      await updateDoc(interactionRef, { saved: false, createdAt: new Date() });
-      await updateDoc(doc(db, 'hobbies', category, 'items', hobby.id), {
-        saves: increment(-1),
-      });
-      return;
-    }
-
-    // 저장 Add
-    await updateDoc(doc(db, 'hobbies', category, 'items', hobby.id), {
-      saves: increment(1),
-    });
-
-    setHobby((prev) => (prev ? { ...prev, saves: prev.saves + 1 } : prev));
-
-    if (interactionSnap.exists()) {
-      await updateDoc(interactionRef, { saved: true, createdAt: new Date() });
-    } else {
-      await setDoc(interactionRef, {
-        userId: user.uid,
-        hobbyId: hobby.category + hobby.id,
-        liked: false,
-        saved: true,
-        createdAt: new Date(),
-      });
-    }
+    // 상태 업데이트
+    setHobby((prev) =>
+      prev
+        ? {
+            ...prev,
+            [counterField]: prev[counterField] + (isAlready ? -1 : 1),
+          }
+        : prev
+    );
   };
 
   useEffect(() => {
@@ -164,13 +134,13 @@ const HobbyDetailPage = () => {
               <div className="flex sm:flex-col mob:flex-col gap-4 w-full mt-auto text-2xl sm:text-xl mob:text-xl font-semibold">
                 <button
                   className="w-1/2 sm:w-full mob:w-full text-center bg-red btn-hover-red rounded-xl p-4 text-white"
-                  onClick={() => handleLike(hobby)}
+                  onClick={() => handleButtonInteraction(hobby, 'like')}
                 >
                   좋아요 {hobby.likes}
                 </button>
                 <div
                   className="w-1/2 sm:w-full mob:w-full text-center bg-purple btn-hover-purple rounded-xl p-4 text-white"
-                  onClick={() => handleSave(hobby)}
+                  onClick={() => handleButtonInteraction(hobby, 'save')}
                 >
                   저장 {hobby.saves}
                 </div>
