@@ -1,6 +1,8 @@
 import { FaInstagram, FaFacebook, FaXTwitter } from 'react-icons/fa6';
 
 const Footer = () => {
+  const year = new Date().getFullYear();
+
   return (
     <footer className="flex flex-col gap-4 bg-yellow p-6 w-full">
       <div className="flex justify-center gap-8">
@@ -14,7 +16,7 @@ const Footer = () => {
           <FaXTwitter size={40} />
         </a>
       </div>
-      <div>Copyright ©2024 LightHobby</div>
+      <div>Copyright ©{year} LightHobby</div>
     </footer>
   );
 };
