@@ -12,6 +12,7 @@ import MoviePage from './pages/MoviePage';
 import AuthLayout from './components/common/AuthLayout';
 import HobbyDetailPage from './pages/HobbyDetailPage';
 import HobbyPostPage from './pages/HobbyPostPage';
+import MyPage from './pages/MyPage';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -42,6 +43,7 @@ const AppRouter = () => (
         {/* 게시물 작성 페이지 */}
         <Route path="post/upload" element={<HobbyPostPage />} />
         {/* 마이페이지 추가 예정 */}
+        <Route path="mypage" element={<MyPage />} />
       </Route>
     </Routes>
   </BrowserRouter>

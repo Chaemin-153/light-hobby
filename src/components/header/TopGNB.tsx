@@ -42,7 +42,7 @@ const TopGNB = () => {
         <div className="w-40 sm:w-32 mob:w-28 flex justify-between text-xl sm:text-base mob:text-sm">
           {currentUser ? (
             <>
-              <Link to={'/'}>
+              <Link to={'/mypage'}>
                 <div>내 정보</div>
               </Link>
               <Link to={'/'}>
