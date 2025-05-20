@@ -18,3 +18,9 @@ export interface UserInteraction {
   saved: boolean;
   createdAt: Timestamp;
 }
+
+export interface ChangePasswordFormValues {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}

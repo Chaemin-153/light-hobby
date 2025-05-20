@@ -13,6 +13,7 @@ import AuthLayout from './components/common/AuthLayout';
 import HobbyDetailPage from './pages/HobbyDetailPage';
 import HobbyPostPage from './pages/HobbyPostPage';
 import MyPage from './pages/MyPage';
+import ChangePasswordPage from './pages/ChangePasswordPage';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -22,6 +23,8 @@ const AppRouter = () => (
         <Route path="login" element={<LoginPage />} />
         {/* 회원가입 페이지 */}
         <Route path="signup" element={<SignupPage />} />
+        {/* 비밀번호 변경 페이지 */}
+        <Route path="mypage/change-password" element={<ChangePasswordPage />} />
       </Route>
       <Route path="/" element={<Layout />}>
         {/* 메인 페이지 */}
@@ -42,7 +45,7 @@ const AppRouter = () => (
         <Route path=":category/:id" element={<HobbyDetailPage />} />
         {/* 게시물 작성 페이지 */}
         <Route path="post/upload" element={<HobbyPostPage />} />
-        {/* 마이페이지 추가 예정 */}
+        {/* 마이페이지 */}
         <Route path="mypage" element={<MyPage />} />
       </Route>
     </Routes>
