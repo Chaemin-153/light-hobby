@@ -1,9 +1,12 @@
 import { FirebaseError } from 'firebase/app';
 import { deleteUser, getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import reauthenticateGoogle from '../utils/reauthenticateGoogle';
+import reauthenticate from '../utils/reauthenticate';
 
 const MyPage = () => {
+  const navigate = useNavigate();
   const auth = getAuth();
   const [user, setUser] = useState(() => auth.currentUser);
 
@@ -17,7 +20,26 @@ const MyPage = () => {
           console.log('회원탈퇴 실패', error);
 
           if (error.code === 'auth/requires-recent-login') {
-            alert('보안을 위해 다시 로그인 후 시도해주세요.');
+            const isGoogleUser = user.providerData.some(
+              (provider) => provider.providerId === 'google.com'
+            );
+
+            try {
+              if (isGoogleUser) {
+                await reauthenticateGoogle(user);
+              } else {
+                const password = prompt('비밀번호 입력');
+                if (!password) return;
+                await reauthenticate(user, password);
+              }
+
+              await deleteUser(user);
+              navigate('/');
+              alert('회원탈퇴 되었습니다');
+            } catch (reauthError) {
+              console.error('재인증 실패:', reauthError);
+              alert('비밀번호가 일치하지 않습니다');
+            }
           }
         }
       }
@@ -82,7 +104,7 @@ const MyPage = () => {
             className="self-end w-1/6 bg-yellow text-white font-bold py-2 rounded focus:border-yellow focus:outline-none hover:bg-yellowHover"
             onClick={deleteAccount}
           >
-            <Link to="/">회원탈퇴</Link>
+            회원탈퇴
           </button>
         </div>
       </div>
