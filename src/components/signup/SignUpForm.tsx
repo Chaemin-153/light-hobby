@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { auth } from '../../firebase';
 import { SignUpFormValues } from '../../types';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () => {
   const {
@@ -10,14 +11,15 @@ const SignUpForm = () => {
     watch,
     formState: { isSubmitting, errors },
   } = useForm<SignUpFormValues>();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<SignUpFormValues> = async (data) => {
     const { email, password } = data;
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      console.log('회원가입 성공!', data);
       alert('회원가입 성공!');
+      navigate('/');
     } catch (error) {
       console.log('회원가입 실패', error);
       alert('회원가입 실패');
