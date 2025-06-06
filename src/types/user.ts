@@ -4,6 +4,7 @@ export interface SignUpFormValues {
   email: string;
   password: string;
   confirmPassword: string;
+  nickname: string;
 }
 
 export interface LoginFormValues {
@@ -16,6 +17,13 @@ export interface UserInteraction {
   hobbyId: string;
   liked: boolean;
   saved: boolean;
+  createdAt: Timestamp;
+}
+
+export interface UserData {
+  uid: string;
+  email: string;
+  displayName: string;
   createdAt: Timestamp;
 }
 

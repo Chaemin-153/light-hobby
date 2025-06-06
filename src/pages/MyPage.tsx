@@ -1,5 +1,5 @@
 import { FirebaseError } from 'firebase/app';
-import { deleteUser, getAuth } from 'firebase/auth';
+import { deleteUser, getAuth, updateProfile } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import reauthenticateGoogle from '../utils/reauthenticateGoogle';
@@ -9,6 +9,24 @@ const MyPage = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const [user, setUser] = useState(() => auth.currentUser);
+  const [nickname, setNickname] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNickname(e.target.value);
+  };
+
+  const handleNicknameUpdate = async () => {
+    if (!user) return;
+
+    try {
+      await updateProfile(user, { displayName: nickname });
+      setMessage('닉네임이 성공적으로 변경되었습니다.');
+    } catch (error) {
+      console.error('닉네임 변경 실패:', error);
+      setMessage('닉네임 변경에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
 
   const deleteAccount = async () => {
     if (user) {
@@ -49,6 +67,7 @@ const MyPage = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
+      setNickname(user?.displayName ?? '');
     });
 
     return () => unsubscribe();
@@ -74,7 +93,31 @@ const MyPage = () => {
           </h2>
         </div>
 
-        <div className="flex flex-col gap-6 w-full sm:w-full mob:w-full h-full">
+        <div className="flex flex-col gap-6 w-full h-full">
+          {/* Nickname */}
+          <div className="flex flex-col gap-2 w-full pb-8 border-b border-gray-200">
+            <label htmlFor="nickname" className="block text-left text-xl w-1/3">
+              닉네임
+            </label>
+            <div className="flex gap-2">
+              <input
+                id="nickname"
+                type="text"
+                value={nickname}
+                onChange={handleNicknameChange}
+                className="w-1/3 px-3 py-2 border rounded focus:border-yellow focus:outline-none"
+              />
+              <button
+                onClick={handleNicknameUpdate}
+                className="bg-yellow text-white px-4 py-2 rounded hover:bg-yellowHover"
+              >
+                저장
+              </button>
+            </div>
+            {message && (
+              <p className="text-left text-sm text-green-600">{message}</p>
+            )}
+          </div>
           {/* Email */}
           <div className="flex flex-col gap-2 w-full pb-8 border-b border-gray-200">
             <label htmlFor="title" className="block text-left text-xl w-1/3">

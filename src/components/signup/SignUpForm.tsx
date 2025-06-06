@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { auth } from '../../firebase';
 import { SignUpFormValues } from '../../types';
@@ -14,10 +14,17 @@ const SignUpForm = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<SignUpFormValues> = async (data) => {
-    const { email, password } = data;
+    const { email, password, nickname } = data;
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+
+      if (auth.currentUser) {
+        await updateProfile(auth.currentUser, {
+          displayName: nickname,
+        });
+      }
+
       alert('회원가입 성공!');
       navigate('/');
     } catch (error) {
@@ -52,7 +59,7 @@ const SignUpForm = () => {
           className="w-full px-3 py-2 border rounded focus:border-yellow focus:outline-none"
         />
         {errors.email && (
-          <small className="text-red-500">{errors.email.message}</small>
+          <small className="text-red text-left">{errors.email.message}</small>
         )}
       </div>
       {/* Password Input */}
@@ -73,7 +80,9 @@ const SignUpForm = () => {
           className="w-full px-3 py-2 border rounded focus:border-yellow focus:outline-none"
         />
         {errors.password && (
-          <small className="text-red-500">{errors.password.message}</small>
+          <small className="text-red text-left">
+            {errors.password.message}
+          </small>
         )}
       </div>
       {/* Confirm Password Input */}
@@ -91,6 +100,34 @@ const SignUpForm = () => {
           id="confirmPassword"
           className="w-full px-3 py-2 border rounded focus:border-yellow focus:outline-none"
         />
+        {errors.confirmPassword && (
+          <small className="text-red text-left">
+            {errors.confirmPassword.message}
+          </small>
+        )}
+      </div>
+      {/* Nickname Input */}
+      <div className="flex flex-col gap-2">
+        <label htmlFor="nickname" className="block text-left">
+          닉네임
+        </label>
+        <input
+          {...register('nickname', {
+            required: '닉네임을 입력해주세요.',
+            maxLength: {
+              value: 20,
+              message: '닉네임을 20자 이하로 입력해주세요.',
+            },
+          })}
+          type="text"
+          id="nickname"
+          className="w-full px-3 py-2 border rounded focus:border-yellow focus:outline-none"
+        />
+        {errors.nickname && (
+          <small className="text-red text-left">
+            {errors.nickname.message}
+          </small>
+        )}
       </div>
       {/* Submit Button */}
       <button
