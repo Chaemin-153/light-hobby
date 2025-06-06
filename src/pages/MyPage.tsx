@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import reauthenticateGoogle from '../utils/reauthenticateGoogle';
 import reauthenticate from '../utils/reauthenticate';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -17,10 +19,15 @@ const MyPage = () => {
   };
 
   const handleNicknameUpdate = async () => {
-    if (!user) return;
+    if (!user || !user.uid) return;
 
     try {
+      const userDocRef = doc(db, 'users', user.uid);
       await updateProfile(user, { displayName: nickname });
+      await updateDoc(userDocRef, {
+        nickname,
+        updatedAt: new Date(),
+      });
       setMessage('닉네임이 성공적으로 변경되었습니다.');
     } catch (error) {
       console.error('닉네임 변경 실패:', error);

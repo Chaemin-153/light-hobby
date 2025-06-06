@@ -1,8 +1,9 @@
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase';
 import { SignUpFormValues } from '../../types';
 import { useNavigate } from 'react-router-dom';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 const SignUpForm = () => {
   const {
@@ -17,12 +18,29 @@ const SignUpForm = () => {
     const { email, password, nickname } = data;
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
 
-      if (auth.currentUser) {
-        await updateProfile(auth.currentUser, {
-          displayName: nickname,
-        });
+      await updateProfile(user, {
+        displayName: nickname,
+      });
+
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        await setDoc(
+          userRef,
+          {
+            uid: user.uid,
+            email: user.email,
+            nickname: nickname,
+            createdAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
       }
 
       alert('회원가입 성공!');
