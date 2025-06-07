@@ -92,14 +92,28 @@ const MyPage = () => {
 
   return (
     <div className="flex justify-center w-full p-12 gap-4">
-      <div className="flex flex-col gap-8 p-4 w-[200px] xl:w-[200px] h-full border-4 border-yellow rounded-xl">
-        <div className="flex flex-col justify-between font-bold gap-2">
-          <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg">내 계정</h2>
-          <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg">좋아요</h2>
-          <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg">저장</h2>
-          <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg">
-            내 게시글
-          </h2>
+      <div className="flex flex-col p-4 w-[200px] xl:w-[200px] h-full border-4 border-yellow rounded-xl">
+        <div className="flex flex-col justify-between font-bold gap-4">
+          <Link to={'/mypage'}>
+            <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg text-yellow border-b-[4px] border-yellow">
+              내 계정
+            </h2>
+          </Link>
+          <Link to={'/mypage/likes'}>
+            <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg btn-hover-yellow">
+              좋아요
+            </h2>
+          </Link>
+          <Link to={'/mypage/saves'}>
+            <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg btn-hover-yellow">
+              저장
+            </h2>
+          </Link>
+          <Link to={'/mypage/my-postings'}>
+            <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg btn-hover-yellow">
+              내 게시글
+            </h2>
+          </Link>
         </div>
       </div>
 
