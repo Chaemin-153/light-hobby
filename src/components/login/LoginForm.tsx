@@ -4,10 +4,11 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import { LoginFormValues } from '../../types';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -18,11 +19,23 @@ const LoginForm = () => {
   } = useForm<LoginFormValues>();
 
   const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-
     try {
+      const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+
+      const userRef = doc(db, 'users', user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          uid: user.uid,
+          email: user.email,
+          nickname: user.displayName || '',
+          createdAt: new Date(),
+        });
+      }
+
       console.log(`${user} 회원 로그인 성공!`);
       navigate('/');
     } catch (error) {
