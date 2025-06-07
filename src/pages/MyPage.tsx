@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import reauthenticateGoogle from '../utils/reauthenticateGoogle';
 import reauthenticate from '../utils/reauthenticate';
-import { doc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const MyPage = () => {
@@ -37,8 +37,15 @@ const MyPage = () => {
 
   const deleteAccount = async () => {
     if (user) {
+      const userDocRef = doc(db, 'users', user.uid);
+
       try {
+        // Firebase Auth 유저 삭제
         await deleteUser(user);
+        // Firestore 'users' 컬렉션에서 문서 삭제
+        await deleteDoc(userDocRef);
+
+        navigate('/');
         alert('회원탈퇴 되었습니다');
       } catch (error) {
         if (error instanceof FirebaseError) {
@@ -57,8 +64,11 @@ const MyPage = () => {
                 if (!password) return;
                 await reauthenticate(user, password);
               }
-
+              // Firebase Auth 유저 삭제
               await deleteUser(user);
+              // Firestore 'users' 컬렉션에서 문서 삭제
+              await deleteDoc(userDocRef);
+
               navigate('/');
               alert('회원탈퇴 되었습니다');
             } catch (reauthError) {
