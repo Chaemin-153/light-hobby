@@ -15,6 +15,7 @@ import HobbyPostPage from './pages/HobbyPostPage';
 import MyPage from './pages/MyPage';
 import ChangePasswordPage from './pages/ChangePasswordPage';
 import LikesPage from './pages/LikesPage';
+import SavesPage from './pages/SavesPage';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -50,6 +51,8 @@ const AppRouter = () => (
         <Route path="mypage" element={<MyPage />} />
         {/* 좋아요 페이지 */}
         <Route path="mypage/likes" element={<LikesPage />} />
+        {/* 저장 페이지 */}
+        <Route path="mypage/saves" element={<SavesPage />} />
       </Route>
     </Routes>
   </BrowserRouter>
