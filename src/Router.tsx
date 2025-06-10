@@ -16,6 +16,7 @@ import MyPage from './pages/MyPage';
 import ChangePasswordPage from './pages/ChangePasswordPage';
 import LikesPage from './pages/LikesPage';
 import SavesPage from './pages/SavesPage';
+import MyPageLayout from './components/common/MyPageLayout';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -47,12 +48,14 @@ const AppRouter = () => (
         <Route path=":category/:id" element={<HobbyDetailPage />} />
         {/* 게시물 작성 페이지 */}
         <Route path="post/upload" element={<HobbyPostPage />} />
-        {/* 마이페이지 */}
-        <Route path="mypage" element={<MyPage />} />
-        {/* 좋아요 페이지 */}
-        <Route path="mypage/likes" element={<LikesPage />} />
-        {/* 저장 페이지 */}
-        <Route path="mypage/saves" element={<SavesPage />} />
+        <Route path="/mypage" element={<MyPageLayout />}>
+          {/* 마이페이지 */}
+          <Route index element={<MyPage />} />
+          {/* 좋아요 페이지 */}
+          <Route path="likes" element={<LikesPage />} />
+          {/* 저장 페이지 */}
+          <Route path="saves" element={<SavesPage />} />
+        </Route>
       </Route>
     </Routes>
   </BrowserRouter>

@@ -91,96 +91,67 @@ const MyPage = () => {
   }, [auth]);
 
   return (
-    <div className="flex justify-center w-full p-12 gap-4">
-      <div className="flex flex-col p-4 w-[200px] xl:w-[200px] h-full border-4 border-yellow rounded-xl">
-        <div className="flex flex-col justify-between font-bold gap-4">
-          <Link to={'/mypage'}>
-            <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg text-yellow border-b-[4px] border-yellow">
-              내 계정
-            </h2>
-          </Link>
-          <Link to={'/mypage/likes'}>
-            <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg btn-hover-yellow">
-              좋아요
-            </h2>
-          </Link>
-          <Link to={'/mypage/saves'}>
-            <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg btn-hover-yellow">
-              저장
-            </h2>
-          </Link>
-          <Link to={'/mypage/my-postings'}>
-            <h2 className="text-xl md:text-xl sm:text-xl mob:text-lg btn-hover-yellow">
-              내 게시글
-            </h2>
-          </Link>
-        </div>
+    <div className="flex flex-col items-start gap-8 p-6 w-full xl:w-pc border-4 border-yellow rounded-xl">
+      <div className="text-left w-full font-bold border-b border-gray-200 pb-8">
+        <h2 className="text-2xl md:text-xl sm:text-xl mob:text-lg">내 계정</h2>
       </div>
 
-      <div className="flex flex-col items-start gap-8 p-12 w-full xl:w-pc border-4 border-yellow rounded-xl">
-        <div className="text-left w-full font-bold border-b border-gray-200 pb-8">
-          <h2 className="text-2xl md:text-xl sm:text-xl mob:text-lg">
-            내 계정
-          </h2>
+      <div className="flex flex-col gap-6 w-full h-full">
+        {/* Nickname */}
+        <div className="flex flex-col gap-2 w-full pb-8 border-b border-gray-200">
+          <label htmlFor="nickname" className="block text-left text-xl w-1/3">
+            닉네임
+          </label>
+          <div className="flex gap-2">
+            <input
+              id="nickname"
+              type="text"
+              value={nickname}
+              onChange={handleNicknameChange}
+              className="w-1/3 px-3 py-2 border rounded focus:border-yellow focus:outline-none"
+            />
+            <button
+              onClick={handleNicknameUpdate}
+              className="bg-yellow text-white px-4 py-2 rounded hover:bg-yellowHover"
+            >
+              저장
+            </button>
+          </div>
+          {message && (
+            <p className="text-left text-sm text-green-600">{message}</p>
+          )}
+        </div>
+        {/* Email */}
+        <div className="flex flex-col gap-2 w-full pb-8 border-b border-gray-200">
+          <label htmlFor="title" className="block text-left text-xl w-1/3">
+            이메일
+          </label>
+          <div className="w-1/3 px-3 py-2 text-gray-400 border rounded focus:border-yellow focus:outline-none">
+            {user?.email}
+          </div>
+        </div>
+        {/* Change Password */}
+        <div className="flex flex-col gap-2 text-left w-full border-b border-gray-200 pb-8">
+          <label htmlFor="description" className="text-xl">
+            비밀번호
+          </label>
+          <div className="flex w-full justify-end">
+            <Link
+              to={'change-password'}
+              className="w-1/6 bg-yellow text-white font-bold text-center py-2 rounded focus:border-yellow focus:outline-none hover:bg-yellowHover"
+            >
+              비밀번호 변경
+            </Link>
+          </div>
         </div>
 
-        <div className="flex flex-col gap-6 w-full h-full">
-          {/* Nickname */}
-          <div className="flex flex-col gap-2 w-full pb-8 border-b border-gray-200">
-            <label htmlFor="nickname" className="block text-left text-xl w-1/3">
-              닉네임
-            </label>
-            <div className="flex gap-2">
-              <input
-                id="nickname"
-                type="text"
-                value={nickname}
-                onChange={handleNicknameChange}
-                className="w-1/3 px-3 py-2 border rounded focus:border-yellow focus:outline-none"
-              />
-              <button
-                onClick={handleNicknameUpdate}
-                className="bg-yellow text-white px-4 py-2 rounded hover:bg-yellowHover"
-              >
-                저장
-              </button>
-            </div>
-            {message && (
-              <p className="text-left text-sm text-green-600">{message}</p>
-            )}
-          </div>
-          {/* Email */}
-          <div className="flex flex-col gap-2 w-full pb-8 border-b border-gray-200">
-            <label htmlFor="title" className="block text-left text-xl w-1/3">
-              이메일
-            </label>
-            <div className="w-1/3 px-3 py-2 text-gray-400 border rounded focus:border-yellow focus:outline-none">
-              {user?.email}
-            </div>
-          </div>
-          {/* Change Password */}
-          <div className="flex flex-col gap-2 text-left w-full border-b border-gray-200 pb-8">
-            <label htmlFor="description" className="text-xl">
-              비밀번호
-            </label>
-            <div className="flex w-full justify-end">
-              <Link
-                to={'change-password'}
-                className="w-1/6 bg-yellow text-white font-bold text-center py-2 rounded focus:border-yellow focus:outline-none hover:bg-yellowHover"
-              >
-                비밀번호 변경
-              </Link>
-            </div>
-          </div>
-
-          {/* Delete Account */}
-          <button
-            className="self-end w-1/6 bg-yellow text-white font-bold py-2 rounded focus:border-yellow focus:outline-none hover:bg-yellowHover"
-            onClick={deleteAccount}
-          >
-            회원탈퇴
-          </button>
-        </div>
+        {/* Delete Account */}
+        <button
+          className="self-end w-1/6 bg-yellow text-white font-bold py-2 rounded focus:border-yellow focus:outline-none hover:bg-yellowHover"
+          onClick={deleteAccount}
+        >
+          회원탈퇴
+        </button>
       </div>
     </div>
   );
