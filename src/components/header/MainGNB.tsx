@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const MainGNB = () => {
   return (
-    <div className="flex justify-center border-b-[1px]">
+    <div className="flex justify-center border-b-[1px] bg-white">
       <div className="flex justify-around w-pc text-xl sm:text-base mob:text-sm font-bold text-gray-600 p-6 ">
         <Link to={'/painting'}>
           <div className="btn-hover-yellow border-b-[4px] border-white">
