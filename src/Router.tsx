@@ -17,6 +17,7 @@ import ChangePasswordPage from './pages/ChangePasswordPage';
 import LikesPage from './pages/LikesPage';
 import SavesPage from './pages/SavesPage';
 import MyPageLayout from './components/common/MyPageLayout';
+import MyPostingsPage from './pages/MyPostingsPage';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -55,6 +56,8 @@ const AppRouter = () => (
           <Route path="likes" element={<LikesPage />} />
           {/* 저장 페이지 */}
           <Route path="saves" element={<SavesPage />} />
+          {/* 내 게시글 페이지 */}
+          <Route path="my-postings" element={<MyPostingsPage />} />
         </Route>
       </Route>
     </Routes>
