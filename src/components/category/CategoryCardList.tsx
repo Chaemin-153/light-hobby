@@ -1,6 +1,6 @@
 import translateCategory from '../../utils/translateCategory';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { auth, db } from '../../firebase';
 import { useEffect, useState } from 'react';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import HobbyCard from '../common/HobbyCard';
@@ -8,6 +8,7 @@ import { HobbyData } from '../../types';
 import { Link } from 'react-router-dom';
 
 const CategoryCardList = ({ category }: { category: string }) => {
+  const user = auth.currentUser;
   const categoryName = translateCategory(category);
 
   const [hobbyDataList, setHobbyDataList] = useState<HobbyData[]>([]);
@@ -51,11 +52,15 @@ const CategoryCardList = ({ category }: { category: string }) => {
         <h2 className="text-2xl md:text-xl sm:text-xl mob:text-lg">
           {categoryName}
         </h2>
-        <Link to={'/post/upload'}>
-          <h2 className="btn-hover-yellow text-xl md:text-base sm:text-base mob:text-base">
-            글 작성
-          </h2>
-        </Link>
+        {user ? (
+          <Link to={'/post/upload'}>
+            <h2 className="btn-hover-yellow text-xl md:text-base sm:text-base mob:text-base">
+              글 작성
+            </h2>
+          </Link>
+        ) : (
+          <></>
+        )}
       </div>
       {/* CardList Content */}
       <div className="grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2 mob:grid-cols-1 gap-4">

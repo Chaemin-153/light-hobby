@@ -8,7 +8,7 @@ import {
   setDoc,
   Timestamp,
 } from 'firebase/firestore';
-import { db } from '../firebase';
+import { auth, db } from '../firebase';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 
 const HobbyPostPage = () => {
@@ -20,6 +20,11 @@ const HobbyPostPage = () => {
   } = useForm<HobbyPostFormValues>();
 
   const onSubmit: SubmitHandler<HobbyPostFormValues> = async (data) => {
+    const user = auth.currentUser;
+    if (!user) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
     const { title, description, category, image } = data;
 
     try {
@@ -52,11 +57,12 @@ const HobbyPostPage = () => {
         likes: 0,
         views: 0,
         saves: 0,
+        authorId: user.uid,
+        authorName: user.displayName || '',
       };
 
       await setDoc(doc(db, 'hobbies', category, 'items', newId), newDoc);
 
-      console.log('업로드 성공!', data);
       alert('업로드 성공!');
       navigate(`/${category}`);
     } catch (error) {
