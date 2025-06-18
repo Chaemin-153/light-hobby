@@ -6,12 +6,12 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { Link } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { useEffect, useState } from 'react';
 import { HobbyData } from '../types';
 import HobbyCard from '../components/common/HobbyCard';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const LikesPage = () => {
   const storage = getStorage();
@@ -64,7 +64,13 @@ const LikesPage = () => {
   };
 
   useEffect(() => {
-    fetchLikedHobbies();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchLikedHobbies();
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   return (
